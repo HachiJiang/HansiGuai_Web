@@ -1,3 +1,48 @@
-body {
+#main {
 	margin-top: 70px;
 }
+
+.subSection {
+	display: none;
+}
+
+div[class~=active] {
+	display: block;
+}
+
+/*测试 start*/
+#pic-wall{
+	background-color: red;
+	height: 300px;
+}
+
+#books{
+	background-color: orange;
+	height: 300px;
+}
+
+#movies{
+	background-color: purple;
+	height: 300px;
+}
+
+#notes{
+	background-color: yellow;
+	height: 300px;
+}
+
+#safebox{
+	background-color: green;
+	height: 300px;
+}
+
+#location{
+	background-color: blue;
+	height: 300px;
+}
+
+#blog{
+	background-color: gray;
+	height:300px;
+}
+/*测试结束 End*/

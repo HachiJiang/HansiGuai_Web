@@ -10,7 +10,7 @@
 	</head>
 	<body>
 		<!-- 顶部导航 -->
-		<nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+		<nav class="navbar navbar-default navbar-fixed-top" id="menu-nav">
 		  <div class="container-fluid">
 		    <div class="navbar-header">
 		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -24,18 +24,18 @@
 
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul class="nav navbar-nav">
-		        <li class="active"><a href="#">Blog<span class="sr-only">(current)</span></a></li>
-		        <li><a href="#">照片墙</a></li>
+		        <li class="active"><a href="#pic-wall">照片墙</a></li>
 	        	<li class="dropdown">
 						  <a href="#" class="dropdown-toggle" data-toggle="dropdown">收藏室<span class="caret"></span></a>
 						  <ul class="dropdown-menu" role="menu">
-						    <li><a href="#">Books</a></li>
-						    <li><a href="#">Movies</a></li>
+						    <li><a href="#books">书籍</a></li>
+						    <li><a href="#movies">电影</a></li>
 						  </ul>
-						</li>
-		        <li><a href="#">便签页</a></li>
-		        <li><a href="#">保险箱</a></li>
-		        <li><a href="#">定位</a></li>		        
+						</li>		
+		        <li><a href="#notes">便签页</a></li>
+		        <li><a href="#safebox">保险箱</a></li>
+		        <li><a href="#location">定位页</a></li>
+		        <li><a href="#blog">博客</a></li>
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
 		      	<li class="dropdown">
@@ -49,6 +49,29 @@
 		    </div>
 		  </div>
 		</nav>
+
+		<section id="main">		
+			<!-- 图片墙内容 -->
+			<div id="pic-wall" class="subSection active"></div>
+			
+			<!-- 收藏室: 书 -->
+			<div id="books" class="subSection collections"></div>
+
+			<!-- 收藏室: 电影 -->
+			<div id="movies" class="subSection collections"></div>
+
+			<!-- 便签页 -->
+			<div id="notes" class="subSection"></div>
+
+			<!-- 保险箱 -->
+			<div id="safebox" class="subSection"></div>
+
+			<!-- 定位页 -->
+			<div id="location" class="subSection"></div>
+
+			<!-- 博客内容 -->
+			<div id="blog" class="subSection"></div>
+		</section>
 
 		<!-- 弹出提醒登录界面 -->
 		<div class="modal fade" id="warningMsg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

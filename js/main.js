@@ -1,4 +1,7 @@
 $(function(){
+	//全局变量
+	var active_href = $("#menu-nav li.active a").attr("href");
+
 	// 为关闭warning窗口绑定事件：转向登陆页
 	$('#warningMsg').on('hide.bs.modal', function() {
 		location.href = "index.html";
@@ -12,6 +15,19 @@ $(function(){
 	}
 	// 用户存在则展示当前用户内容
 	$("#user").html("Welcome, <strong>" + username + "</strong>!");
+
+	//切换页面分区事件
+	$("#menu-nav .navbar-collapse li").click(function () {
+		var href = $(this).children("a").attr('href');
+		
+		if ('#' !== href) {
+			$("#menu-nav li.active").removeClass("active");
+			$("#main div" + active_href).removeClass("active");
+			$(this).addClass("active");
+	    active_href = href;
+	    $("#main div" + active_href).addClass("active");
+	  }
+  });
 	// sign out事件
 	$("#signOut").click(function() {
 		var currentUser = localStorage["currentUser"];
