@@ -17,15 +17,16 @@ $(function(){
 	$("#user").html("Welcome, <strong>" + username + "</strong>!");
 
 	//切换页面分区事件
-	$("#menu-nav .navbar-collapse li").click(function () {
+	$("#menu-nav .navbar-collapse li").click(function (e) {
 		var href = $(this).children("a").attr('href');
 		
 		if ('#' !== href) {
+			e.preventDefault();
 			$("#menu-nav li.active").removeClass("active");
-			$("#main div" + active_href).removeClass("active");
+			$("#content-wrap .sub-section" + active_href).removeClass("active");
 			$(this).addClass("active");
 	    active_href = href;
-	    $("#main div" + active_href).addClass("active");
+	    $("#content-wrap .sub-section" + active_href).addClass("active");
 	  }
   });
 	// sign out事件

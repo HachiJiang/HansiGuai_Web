@@ -1,12 +1,12 @@
-#main {
+#content-wrap {
 	margin-top: 70px;
 }
 
-.subSection {
+.sub-section {
 	display: none;
 }
 
-div[class~=active] {
+.sub-section[class~=active] {
 	display: block;
 }
 
@@ -39,10 +39,5 @@ div[class~=active] {
 #location{
 	background-color: blue;
 	height: 300px;
-}
-
-#blog{
-	background-color: gray;
-	height:300px;
 }
 /*测试结束 End*/
