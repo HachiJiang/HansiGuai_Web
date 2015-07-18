@@ -10,6 +10,22 @@
 	display: block;
 }
 
+#blog-main {
+	display: none;
+}
+
+#blog-main[class~=active] {
+	display: block;
+}
+
+#article-editor {
+	display: none;
+}
+
+#article-editor[class~=active] {
+	display: block;
+}
+
 /*测试 start*/
 #pic-wall{
 	background-color: red;
@@ -40,4 +56,7 @@
 	background-color: blue;
 	height: 300px;
 }
-/*测试结束 End*/
+
+#epiceditor {
+	height: 200px;
+}

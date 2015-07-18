@@ -6,9 +6,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>HansiGuai的Web小窝</title>
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/blog.css">
+  <link rel="stylesheet" href="static/css/bootstrap.min.css">
+  <link rel="stylesheet" href="static/css/main.css">
+  <link rel="stylesheet" href="static/css/blog.css">
 </head>
 
 <body>
@@ -56,7 +56,7 @@
     <section id="blog" class="sub-section active">
       <div class="container">
         <div class="row">
-          <main class="col-md-8 main-content">
+          <main class="col-md-8 main-content active" id="blog-main">
             <article id=70 class="post tag-zhuti tag-static-page tag-customize-page">
               <div class="post-head">
                 <h1 class="post-title"><a href="/create-custom-page-template/">如何制作一个自定义的页面（译）</a></h1>
@@ -85,57 +85,71 @@
               <a class="older-posts" href="/page/2/"><i class="fa fa-angle-right"></i></a>
             </nav>
           </main>
+          <section class="col-md-8" id="article-editor">
+            <div>
+              <h4>文章编辑</h4>
+            </div>
+            <div>
+              <form class="form-group">
+                <input class="form-control" placeholder="标题" id="article-title" value="请使用markdown语法">
+                <div>
+                  <div class="pull-left" id="article-tag">
+                    <btn><a href="#">添加标签</a></btn>
+                    <p class="tag">Ghost</p>
+                    <p class="tag">jquery</p>
+                  </div>
+                  <div class="pull-right" id="article-preview">
+                    <btn data-toggle="modal" data-target="#article-preview-dialog"><a href="#">预览</a></btn>
+                  </div>
+                </div>
+                <textarea rows="15" class="form-control" placeholder="正文, 请使用markdown语法编辑" id="article-content">#一级标题</textarea>
+              </form>
+            </div>
+            <div class="pull-right">
+              <button type="button" class="btn btn-default" data-dismiss="modal" id="exit-editor-btn">退出编辑</button>
+              <button type="button" class="btn btn-primary" id="save-article-btn">保存文章</button>
+            </div>
+          </section>
           <aside class="col-md-4 sidebar">
             <!-- start widget -->
+            <div class="widget">
+              <div class="content download">
+                <a href="" class="btn btn-default btn-block" data-toggle="modal" data-target="#article-create-dialog" id="article-create-btn">写文章</a>
+              </div>
+            </div>
             <!-- end widget -->
             <!-- start tag cloud widget -->
             <div class="widget">
-              <h4 class="title">社区</h4>
+              <h4 class="title">新浪微博</h4>
               <div class="content community">
-                <p>QQ群：277327792</p>
-                <p><a href="http://wenda.ghostchina.com/" title="Ghost中文网问答社区" target="_blank" onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '问答社区'])"><i class="fa fa-comments"></i> 问答社区</a></p>
-                <p><a href="http://weibo.com/ghostchinacom" title="Ghost中文网官方微博" target="_blank" onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '官方微博'])"><i class="fa fa-weibo"></i> 官方微博</a></p>
+                <p><a href="http://weibo.com/1698421664/profile?topnav=1&wvr=6#1437189511400" title="布达拉乖新浪微博" target="_blank" onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '布达拉乖'])"><i class="fa fa-weibo"></i> 布达拉乖</a></p>
+                <p><a href="http://weibo.com/u/2896157707" title="欢胖冬瓜矮新浪微博" target="_blank" onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '欢胖冬瓜矮'])"><i class="fa fa-weibo"></i> 欢胖冬瓜矮</a></p>
               </div>
             </div>
             <!-- end tag cloud widget -->
-            <!-- start widget -->
+            <!-- start tag cloud widget -->
             <div class="widget">
-              <h4 class="title">下载 Ghost</h4>
-              <div class="content download">
-                <a href="/download/" class="btn btn-default btn-block" onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '下载Ghost'])">Ghost 中文版（0.6.0）</a>
+              <h4 class="title">归档</h4>
+              <div class="content community">
+                <p><a href="" title="" target="_blank" onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '2015'])"><i class="fa fa-comments"></i> 2015</a></p>
               </div>
             </div>
-            <!-- end widget -->
+            <!-- end tag cloud widget -->
             <!-- start tag cloud widget -->
             <div class="widget">
               <h4 class="title">标签云</h4>
               <div class="content tag-cloud">
                 <a href="/tag/about-ghost/">Ghost</a>
-                <a href="/tag/release/">新版本发布</a>
-                <a href="/tag/javascript/">JavaScript</a>
-                <a href="/tag/promise/">Promise</a>
-                <a href="/tag/zhuti/">主题</a>
-                <a href="/tag/mysql/">MySQL</a>
-                <a href="/tag/nodejs/">Node.js</a>
-                <a href="/tag/ghost-in-depth/">深度玩转 Ghost</a>
-                <a href="/tag/ubuntu/">Ubuntu</a>
-                <a href="/tag/aliyun-ecs/">阿里云服务器</a>
-                <a href="/tag/nginx/">Nginx</a>
-                <a href="/tag/bae/">BAE</a>
-                <a href="/tag/theme/">Theme</a>
-                <a href="/tag/customize-page/">自定义页面</a>
-                <a href="/tag/static-page/">静态页面</a>
-                <a href="/tag/upload/">上传</a>
-                <a href="/tag/yong-hu-zhi-nan/">用户指南</a>
-                <a href="/tag/sqlite/">sqlite</a>
-                <a href="/tag-cloud/">...</a>
               </div>
             </div>
             <!-- end tag cloud widget -->
-            <!-- start widget -->
-            <!-- end widget -->
-            <!-- start widget -->
-            <!-- end widget -->
+            <!-- start tag cloud widget -->
+            <div class="widget">
+              <div class="others">
+                <p><a href="" title="切换文章" target="_blank" onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '切换文章'])"><i class="fa fa-comments"></i> 切换文章</a></p>
+              </div>
+            </div>
+            <!-- end tag cloud widget -->
           </aside>
         </div>
       </div>
@@ -164,9 +178,30 @@
       </div>
     </div>
   </div>
-  <script src="js/jquery-2.1.3.min.js"></script>
-  <script src="js/bootstrap.min.js"></script>
-  <script src="js/main.js"></script>
+  <!-- 博客文章预览窗口 -->
+  <div class="modal" id="article-preview-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-body">
+          <p>模态弹出窗主体内容</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="sea-modules/seajs/3.0.0/sea.js"></script>
+  <script>
+  // Set configuration
+  seajs.config({
+    base: "./sea-modules/",
+    alias: {
+      "jquery": "js/jquery-2.1.3.min.js",
+      "bootstrap": "js/bootstrap.min.js"
+    }
+  });
+
+  // 加载文件入口
+  seajs.use("main.js");
+  </script>
 </body>
 
 </html>
