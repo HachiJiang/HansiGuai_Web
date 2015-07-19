@@ -6,33 +6,44 @@ header('Access-Control-Allow-Credentials:true');
 header("Content-Type: application/json;charset=utf-8"); 
 date_default_timezone_set('PRC');
 
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-	echo '{"success":false,"msg":"不支持GET方法"}';
-} elseif ($_SERVER["REQUEST_METHOD"] == "POST"){
-	if(!isset($_POST["event"]) || empty($_POST["event"])) {
-	 	echo '{"success":false,"msg":"未指定事件"}';
-	 	return;
-	}
-	switch ($_POST["event"]) {
-		case "_0000":
-			login();
-			break;
-		case "_0001":
-			logout();
-			break;
-		default:
-			break;
-	}
+/*function p($var)
+{
+    echo '<pre>';
+    print_r($var);
+    echo '<pre/>';
+}*/
+
+if(!isset($_REQUEST["event"]) || empty($_REQUEST["event"])) {
+ 	echo '{"success":false,"msg":"未指定事件"}';
+ 	return;
 }
+
+switch ($_REQUEST["event"]) {
+	case "_0000":
+		login();
+		break;
+	case "_0001":
+		logout();
+		break;
+	case "_0002":
+		saveArticle();
+		break;
+	case "_0003":
+		getArticlesByAuthor();
+		break;
+	default:
+		break;
+}
+
 //搜索username，验证password
 function login(){
-	if(!isset($_POST["username"]) || empty($_POST["username"]) 
-	 	|| !isset($_POST["password"]) || empty($_POST["password"])) {
+	if(!isset($_REQUEST["username"]) || empty($_REQUEST["username"]) 
+	 	|| !isset($_REQUEST["password"]) || empty($_REQUEST["password"])) {
 	 	echo '{"success":false,"msg":"输入无效"}';
 	 	return;
 	}
-	$username = $_POST["username"];
-	$password = $_POST["password"];
+	$username = $_REQUEST["username"];
+	$password = $_REQUEST["password"];
 	$result = '{"success":false,"msg":"用户名或密码不存在"}';
 	//连接数据库
 	$link = new mysqli("121.41.119.102", "root", "123456","hansiguai");
@@ -55,6 +66,7 @@ function login(){
 	$link->close();
 	echo $result;
 }
+
 //logout，修改user状态
 function logout() {
 	//连接数据库
@@ -62,14 +74,84 @@ function logout() {
 	if (mysqli_connect_errno()){
 	    die('Unable to connect!').mysqli_connect_error();
 	}
-	$username = $_POST["username"];
-	$result = '{"success":true,"msg":"成功退出"}';
+
+	$username = $_REQUEST["username"];
 	//更新user退出时间，登录状态
 	$currentDate = date('Y-m-d H:i:s',time());
-	$sql = "UPDATE users SET last_logout_time='$currentDate',status=false WHERE username='$username'";
+	$sql = 'INSERT articles (author, title, tags, date_created, content) VALUES '.
+               '("'.$author.'", "'.$title.'", "'.$tags.'" , "'.$date_created.'", "'.$content.'")';
 	$link->query($sql);
 	//关闭数据库连接
 	$link->close();
-	echo $result;
+	echo '{"success":true,"msg":"成功退出"}';
 }
+
+//保存文章
+function saveArticle() {
+	// GET VARS
+  $id = trim($_REQUEST['id']);
+  if(!$id)
+    echo json_encode(error(false, 'id not exist'));
+
+  $author = trim($_REQUEST['author']);
+  if(!$author)
+    echo json_encode(error(false, 'author not exist'));
+
+  $title = trim($_REQUEST['title']);
+  if(!$title)
+    echo json_encode(error(false, 'title not exist'));
+
+  $tags = trim($_REQUEST['tags']); 
+  if(!$tags)
+    echo json_encode(error(false, 'tags not exist'));
+
+  $content = trim($_REQUEST['content']);
+  if(!$content)
+    echo json_encode(error(false, 'content not exist'));
+
+	//连接数据库
+	$link = new mysqli("121.41.119.102", "root", "123456","hansiguai");
+	if (mysqli_connect_errno()){
+	    die('Unable to connect!').mysqli_connect_error();
+	}
+
+	// 如果$id=-1表示为新文章；否则，查询并覆盖旧文章
+	if ($id == "-1") {
+		$date_created = date('Y-m-d H:i:s',time());
+		$sql = 'INSERT articles (author, title, tags, date_created, content) VALUES '.
+               '("'.$author.'", "'.$title.'", "'.$tags.'" , "'.$date_created.'", "'.$content.'")';
+		$link->query($sql);
+	} else {
+
+	}
+
+	// 更新相关统计信息，如tag等
+
+	//关闭数据库连接
+	$link->close();
+	echo '{"success":true,"msg":"保存成功"}';
+}
+
+function getArticlesByAuthor() {
+	$author = trim($_REQUEST['author']);
+  if(!$author)
+    echo json_encode(error(false, 'author not exist'));
+
+  $link = new mysqli("121.41.119.102", "root", "123456","hansiguai");
+	if (mysqli_connect_errno()){
+	  die('Unable to connect!').mysqli_connect_error();
+	}
+
+	$sql = 'SELECT * FROM articles WHERE author="'.$author.'"';
+	$query_info = $link->query($sql);
+	$articles = array();
+	while($article = $query_info->fetch_assoc()) {   
+    array_push($articles, $article);
+  }
+
+  //关闭数据库连接
+	$link->close();
+	echo json_encode($articles);
+}
+
 ?>

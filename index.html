@@ -38,45 +38,20 @@
       </div>
     </div>
   </div>
-  <script src="sea-modules/js/jquery-2.1.3.min.js"></script>
-  <script src="sea-modules/js/bootstrap.min.js"></script>
+  <script src="sea-modules/seajs/3.0.0/sea.js"></script>
   <script>
-  $(function() {
-    // 用户如果已经登录，直接跳转至main.index
-    if (localStorage["currentUser"]) {
-      location.href = "main.html";
+  // Set configuration
+  seajs.config({
+    base: "./sea-modules/",
+    alias: {
+      "jquery": "js/jquery-2.1.3.min",
+      "bootstrap": "js/bootstrap.min",
+      "marked": "js/marked.min"
     }
-    $("#submitBtn").click(function() {
-      if ($("#username").val() == "" || $("#password").val() == "") {
-        $("#warningMsg").html("用户名或密码不能为空！");
-        return;
-      }
-      $.ajax({
-        type: "POST",
-        url: "php/index.php",
-        data: {
-          event: "_0000",
-          username: $("#username").val(),
-          password: $("#password").val()
-        },
-        dataType: "json",
-        success: function(data) {
-          if (data.success) {
-            //数据请求成功，且验证成功，跳转页面，显示username
-            location.href = "main.html";
-            localStorage.setItem("currentUser", $("#username").val());
-          } else {
-            //数据请求成功，但验证失败
-            $("#warningMsg").html(data.msg);
-          }
-        },
-        error: function(jqXHR) {
-          //数据请求失败，弹出报错
-          $("#warningMsg").html("连接失败");
-        }
-      });
-    });
   });
+
+  // 加载文件入口
+  seajs.use("index.js");
   </script>
 </body>
 

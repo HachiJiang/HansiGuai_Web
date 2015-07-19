@@ -10,19 +10,11 @@
 	display: block;
 }
 
-#blog-main {
+.main-content {
 	display: none;
 }
 
-#blog-main[class~=active] {
-	display: block;
-}
-
-#article-editor {
-	display: none;
-}
-
-#article-editor[class~=active] {
+.main-content[class~=active] {
 	display: block;
 }
 
