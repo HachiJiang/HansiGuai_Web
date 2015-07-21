@@ -53,14 +53,32 @@ define(function(require, exports, module) {
   }
 
   // 解析时间
+  var weekday = {
+    /*"0": "Sunday",
+    "1": "Monday",
+    "2": "Tuesday",
+    "3": "Wednesday",
+    "4": "Thursday",
+    "5": "Friday",
+    "6": "Saturday"*/
+    "0": "日",
+    "1": "一",
+    "2": "二",
+    "3": "三",
+    "4": "四",
+    "5": "五",
+    "6": "六"
+  };
+
   function parseDate(date) {
     var year = date.getFullYear();
     var month = date.getMonth() + 1;
     var daytime = date.getDate();
-    var day = date.getDay();
+    var day = weekday[date.getDay()];
     var hours = date.getHours();
     var minutes = date.getMinutes();
-    return year + "年" + month + "月" + daytime + "日 " + hours + ":" + minutes;
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    return year + "年" + month + "月" + daytime + "日 星期" + day + " " + hours + ":" + minutes;
   }
 
   // 获取用户输入的文章内容并解析成HTML
@@ -76,8 +94,17 @@ define(function(require, exports, module) {
 
     article.contentHTML = "<section class='post-content'>" + article.content + "</section>";
 
-    return '<article class="post tag-about-ghost tag-release featured">' + article.titleHTML + article.contentHTML + '<footer class="post-footer clearfix"><div class="pull-left tag-list"><i class="fa fa-folder-open-o"></i>' + article.tagHTML + '</div></footer>' + '</article>';
+    return '<article class="post tag-release featured">' + article.titleHTML + article.contentHTML + '<footer class="post-footer clearfix"><div class="pull-left tag-list"><i class="fa fa-folder-open-o"></i>' + article.tagHTML + '</div></footer>' + '</article>';
   }
   exports.parseInputToHTML = parseInputToHTML;
 
+  // 文章转换为单篇显示
+  function displaySingleArticle(article_node) {
+    article_node.append('<btn class="pull-right" id="back-to-blog-main-btn"><a href="#">→博客主页</a></btn>');
+    $('.article-single').html(article_node);
+    $('#article-editor').removeClass("active");
+    $('#blog-main').removeClass("active");
+    $('.article-single').addClass("active");
+  }
+  exports.displaySingleArticle = displaySingleArticle;
 })

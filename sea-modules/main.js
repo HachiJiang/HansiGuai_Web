@@ -21,27 +21,6 @@ define(function(require, exports, module) {
       return;
     }
 
-    // 用户存在则展示当前用户内容
-    $("#user").html("Welcome, <strong>" + username + "</strong>!");
-    // 加载数据库里的文章
-    $.ajax({
-      type: "GET",
-      url: "./php/index.php",
-      data: {
-        event: "_0003",
-        author: username
-      },
-      dataType: "json",
-      success: function(data) {
-        //数据请求成功，获取当前用户所有文章
-        
-      },
-      error: function(jqXHR) {
-        //数据请求失败，弹出报错
-        alert("连接失败");
-      }
-    });
-
     // 切换页面分区事件
     $("#menu-nav .navbar-collapse li").click(function(e) {
       var href = $(this).children("a").attr('href');
@@ -87,11 +66,17 @@ define(function(require, exports, module) {
 
     var blog = require("blog");
 
+    // 用户存在则展示当前用户内容
+    $("#user").html("Welcome, <strong>" + username + "</strong>!");
+
+    var XHRs = require('XHRs');
+    XHRs.loadAllArticles(username);
+
     // 显示文章编辑窗口区域
     $('#article-create-btn').on('click', function() {
       // 初始化input节点
       $('#article-title').val("");
-      $('#article-content').html("");
+      $('#article-content').val("");
       $('#article-tags').empty();
 
       $('.article-single').removeClass("active");
@@ -120,47 +105,22 @@ define(function(require, exports, module) {
       var article = blog.getArticleInfo();
       if (article === "") return;
 
-      $("#notifyMsg").modal();
-      $("#myModalLabel").html("正在保存...");
-      $.ajax({
-        type: "POST",
-        url: "./php/index.php",
-        data: {
-          event: "_0002",
-          id: article.id,
-          author: "guai",
-          title: article.title,
-          tags: article.tags.join(","),
-          content: article.content
-        },
-        dataType: "json",
-        success: function(data) {
-          if (data.success) {
-            //文章保存成功，显示整篇文章
-            var article_node = $(blog.parseInputToHTML(article));
-            article_node.append('<btn class="pull-right" id="back-to-blog-main-btn"><a href="#">→博客主页</a></btn>');
-            $('.article-single').html(article_node);
-            $('#article-editor').removeClass("active");
-            $('#blog-main').removeClass("active");
-            $('.article-single').addClass("active");
-            $("#myModalLabel").modal("hide");
-          } else {
-            //数据请求成功，但验证失败
-            alert(data.msg);
-          }
-        },
-        error: function(jqXHR) {
-          //数据请求失败，弹出报错
-          alert("连接失败");
-        }
-      });
+      XHRs.loadSingleArticle(article);
     });
 
     // 返回博客主页
     $('.article-single').on('click', '#back-to-blog-main-btn', function() {
+      XHRs.loadAllArticles(username);
       $('.article-single').removeClass("active");
       $('#blog-main').addClass("active");
     });
 
+    // 阅读全文
+    $('#blog-main').on('click', '.post-permalink a', function() {
+      var article_node = $(this).parents('article').clone();
+      $(article_node).find('.post-permalink').remove();
+      $(article_node).find('.post-permalink').remove();
+      blog.displaySingleArticle(article_node);
+    });
   });
 });

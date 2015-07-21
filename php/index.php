@@ -102,8 +102,6 @@ function saveArticle() {
     echo json_encode(error(false, 'title not exist'));
 
   $tags = trim($_REQUEST['tags']); 
-  if(!$tags)
-    echo json_encode(error(false, 'tags not exist'));
 
   $content = trim($_REQUEST['content']);
   if(!$content)
