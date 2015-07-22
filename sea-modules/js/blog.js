@@ -28,7 +28,7 @@ define(function(require, exports, module) {
       title: $('#article-title').val(),
       tags: $('#article-tag-list').children('.tag') || "",
       date_created: new Date(),
-      content: parseArticleContent($('#article-content').val())
+      content: $('#article-content').val()
     };
 
     if (validateArticleInfo(article) === false) return "";
@@ -83,6 +83,7 @@ define(function(require, exports, module) {
 
   // 获取用户输入的文章内容并解析成HTML
   function parseInputToHTML(article) {
+    article.content = parseArticleContent(article.content);
     article.date_created_HTML = parseDate(article.date_created);
     article.titleHTML = "<div class='post-head'><h1 class='post-title'><a href='#'>" + article.title + "</a></h1><div class='post-meta'><span class='author'>作者：<a href='#'>" + article.author + "</a></span> &bull;<time class='post-date' datetime='" + article.date_created + "' title='" + article.created_date + "'>" + article.date_created_HTML + "</time></div></div>";
 

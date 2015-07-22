@@ -31,6 +31,9 @@ switch ($_REQUEST["event"]) {
 	case "_0003":
 		getArticlesByAuthor();
 		break;
+	case "_0004":
+		getSingleArticleById();
+		break;
 	default:
 		break;
 }
@@ -78,8 +81,7 @@ function logout() {
 	$username = $_REQUEST["username"];
 	//更新user退出时间，登录状态
 	$currentDate = date('Y-m-d H:i:s',time());
-	$sql = 'INSERT articles (author, title, tags, date_created, content) VALUES '.
-               '("'.$author.'", "'.$title.'", "'.$tags.'" , "'.$date_created.'", "'.$content.'")';
+	$sql = "UPDATE users SET last_logout_time='$currentDate',status=false WHERE username='$username'";
 	$link->query($sql);
 	//关闭数据库连接
 	$link->close();
@@ -116,12 +118,12 @@ function saveArticle() {
 	// 如果$id=-1表示为新文章；否则，查询并覆盖旧文章
 	if ($id == "-1") {
 		$date_created = date('Y-m-d H:i:s',time());
-		$sql = 'INSERT articles (author, title, tags, date_created, content) VALUES '.
+		$sql = 'UPDATE articles SET(author, title, tags, date_created, content) VALUES '.
                '("'.$author.'", "'.$title.'", "'.$tags.'" , "'.$date_created.'", "'.$content.'")';
-		$link->query($sql);
 	} else {
-
+		$sql = 'UPDATE articles SET title="'.$title.'",content="'.$content.'" WHERE id="'.$id.'"';
 	}
+	$link->query($sql);
 
 	// 更新相关统计信息，如tag等
 
@@ -150,6 +152,28 @@ function getArticlesByAuthor() {
   //关闭数据库连接
 	$link->close();
 	echo json_encode($articles);
+}
+
+function getSingleArticleById() {
+	$id = trim($_REQUEST['id']);
+  if(!$id)
+    echo json_encode(error(false, 'id not exist'));
+
+  $link = new mysqli("121.41.119.102", "root", "123456","hansiguai");
+	if (mysqli_connect_errno()){
+	  die('Unable to connect!').mysqli_connect_error();
+	}
+
+	$sql = 'SELECT * FROM articles WHERE id="'.$id.'"';
+	$query_info = $link->query($sql);
+	$articles = array();
+	while($article = $query_info->fetch_assoc()) {   
+    array_push($articles, $article);
+  }
+
+  //关闭数据库连接
+	$link->close();
+	echo '{"success":true,"msg":'.json_encode($articles[0]).'}';
 }
 
 ?>

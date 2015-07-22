@@ -38,7 +38,7 @@ define(function(require, exports, module) {
   }
   exports.loadAllArticles = loadAllArticles;
 
-  function loadSingleArticle(article) {
+  function saveSingleArticle(article) {
     $.ajax({
       type: "POST",
       url: "./php/index.php",
@@ -67,5 +67,67 @@ define(function(require, exports, module) {
       }
     });
   }
-  exports.loadSingleArticle = loadSingleArticle;
+  exports.saveSingleArticle = saveSingleArticle;
+
+  function requestSingleArticle(article_id) {
+    $.ajax({
+      type: "POST",
+      url: "./php/index.php",
+      data: {
+        event: "_0004",
+        id: article_id
+      },
+      dataType: "json",
+      success: function(data) {
+        if (data.success) {
+          $('.article-single').removeClass("active");
+          $('#blog-main').removeClass("active");
+          //文章请求成功，将单篇文章加载到编辑页
+          var article = data.msg;
+          $('#article-editor #article-title').val(article.title);
+          $('#article-editor textarea').html(article.content);
+          if (article.tags) {
+
+          }
+          $('#article-editor').addClass("active");
+        } else {
+          //数据请求成功，但验证失败
+          alert(data.msg);
+        }
+      },
+      error: function(jqXHR) {
+        //数据请求失败，弹出报错
+        alert("连接失败");
+      }
+    });
+  }
+  exports.requestSingleArticle = requestSingleArticle;
+
+  function requestSignout(username) {
+    //修改数据库中user状态
+    $.ajax({
+      type: "POST",
+      url: "./php/index.php",
+      data: {
+        event: "_0001",
+        username: username
+      },
+      dataType: "json",
+      success: function(data) {
+        if (data.success) {
+          //数据请求成功，且验证成功，跳转回登录页面
+          location.href = "index.html";
+          localStorage.clear();
+        } else {
+          //数据请求成功，但验证失败
+          alert(data.msg);
+        }
+      },
+      error: function(jqXHR) {
+        //数据请求失败，弹出报错
+        alert("连接失败");
+      }
+    });
+  }
+  exports.requestSignout = requestSignout;
 })

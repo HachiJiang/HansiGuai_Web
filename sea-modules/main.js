@@ -38,30 +38,7 @@ define(function(require, exports, module) {
     // sign out事件
     $("#signOut").click(function() {
       var currentUser = localStorage["currentUser"];
-      //修改数据库中user状态
-      $.ajax({
-        type: "POST",
-        url: "./php/index.php",
-        data: {
-          event: "_0001",
-          username: currentUser
-        },
-        dataType: "json",
-        success: function(data) {
-          if (data.success) {
-            //数据请求成功，且验证成功，跳转回登录页面
-            location.href = "index.html";
-            localStorage.clear();
-          } else {
-            //数据请求成功，但验证失败
-            alert(data.msg);
-          }
-        },
-        error: function(jqXHR) {
-          //数据请求失败，弹出报错
-          alert("连接失败");
-        }
-      });
+      XHRs.requestSignout(currentUser);
     });
 
     var blog = require("blog");
@@ -105,7 +82,7 @@ define(function(require, exports, module) {
       var article = blog.getArticleInfo();
       if (article === "") return;
 
-      XHRs.loadSingleArticle(article);
+      XHRs.saveSingleArticle(article);
     });
 
     // 返回博客主页
@@ -121,6 +98,13 @@ define(function(require, exports, module) {
       $(article_node).find('.post-permalink').remove();
       $(article_node).find('.post-permalink').remove();
       blog.displaySingleArticle(article_node);
+    });
+
+    // 点击标题进入编辑模式
+    $('.article-single').on('click', '.post-title a', function() {
+      // 请求单篇文章数据，并加载到编辑页
+      var article_id = $(this).parents('article').attr('id');
+      XHRs.requestSingleArticle(article_id);
     });
   });
 });
