@@ -90,6 +90,7 @@ define(function(require, exports, module) {
 
           }
           $('#article-editor').addClass("active");
+          $('#article-editor .form-group').attr("id", article_id);
         } else {
           //数据请求成功，但验证失败
           alert(data.msg);

@@ -23,7 +23,6 @@ define(function(require, exports, module) {
   // 获取用户输入的文章相关内容
   function getArticleInfo() {
     var article = {
-      id: -1,
       author: localStorage.getItem("currentUser"),
       title: $('#article-title').val(),
       tags: $('#article-tag-list').children('.tag') || "",
@@ -31,6 +30,8 @@ define(function(require, exports, module) {
       content: $('#article-content').val()
     };
 
+    var article_id = $('#article-editor .form-group').attr("id");
+    article.id = (article_id === undefined) ? -1 : article_id;
     if (validateArticleInfo(article) === false) return "";
 
     var tags = [];

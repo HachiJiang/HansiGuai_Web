@@ -8,9 +8,9 @@ date_default_timezone_set('PRC');
 
 /*function p($var)
 {
-    echo '<pre>';
-    print_r($var);
-    echo '<pre/>';
+  echo '<pre>';
+  print_r($var);
+  echo '<pre/>';
 }*/
 
 if(!isset($_REQUEST["event"]) || empty($_REQUEST["event"])) {
