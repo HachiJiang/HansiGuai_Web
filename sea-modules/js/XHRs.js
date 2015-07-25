@@ -18,15 +18,14 @@ define(function(require, exports, module) {
         var permalink_btn = '<div class="post-permalink"><a href="#" class="btn btn-default">阅读全文</a></div>';
         var tmp = $('<div></div>');
         //数据请求成功，获取当前用户所有文章
-        for (var i = data.length - 1; i >= 0; i--) {
-          var article = data[i];
+        data.forEach(function(article) {
           article.date_created = new Date(article.date_created);
           article.tags = article.tags.split(",");
           var article_node = $(blog.parseInputToHTML(article));
           $(article_node).attr("id", article.id);
           $(article_node).find('.post-footer').before(permalink_btn);
           tmp.append(article_node);
-        };
+        })
         tmp.append('<nav class="pagination" role="navigation"><span class="page-number">第 1 页 ⁄ 共 7 页</span><a class="older-posts" href="/page/2/"><i class="fa fa-angle-right"></i></a></nav>');
         $('#blog-main').html(tmp.html());
       },
@@ -69,7 +68,7 @@ define(function(require, exports, module) {
   }
   exports.saveSingleArticle = saveSingleArticle;
 
-  function requestSingleArticle(article_id) {
+  function requestSingleArticleToEdit(article_id) {
     $.ajax({
       type: "POST",
       url: "./php/index.php",
@@ -102,7 +101,38 @@ define(function(require, exports, module) {
       }
     });
   }
-  exports.requestSingleArticle = requestSingleArticle;
+  exports.requestSingleArticleToEdit = requestSingleArticleToEdit;
+
+  function requestSingleArticleToDisplay(article_id) {
+    $.ajax({
+      type: "POST",
+      url: "./php/index.php",
+      data: {
+        event: "_0004",
+        id: article_id
+      },
+      dataType: "json",
+      success: function(data) {
+        if (data.success) {
+          //文章请求成功，将单篇文章加载到单篇显示页
+          var article = data.msg;
+          article.date_created = new Date(article.date_created);
+          article.tags = article.tags.split(",");
+          var article_node = $(blog.parseInputToHTML(article));
+          $(article_node).attr("id", article.id);
+          blog.displaySingleArticle(article_node);
+        } else {
+          //数据请求成功，但验证失败
+          alert(data.msg);
+        }
+      },
+      error: function(jqXHR) {
+        //数据请求失败，弹出报错
+        alert("连接失败");
+      }
+    });
+  }
+  exports.requestSingleArticleToDisplay = requestSingleArticleToDisplay;
 
   function requestSignout(username) {
     //修改数据库中user状态

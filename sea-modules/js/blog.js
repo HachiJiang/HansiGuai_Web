@@ -2,6 +2,14 @@ define(function(require, exports, module) {
 
   require("jquery");
   require("bootstrap");
+  require("marked");
+  require('highlightjs/highlight.pack.js');
+
+  marked.setOptions({
+    highlight: function(code) {
+      return hljs.highlightAuto(code).value;
+    }
+  });
 
   // 验证用户输入是否有效
   function validateArticleInfo(article) {
@@ -46,22 +54,13 @@ define(function(require, exports, module) {
 
   // 解析用户输入的markdown内容
   function parseArticleContent(content) {
-    require("marked");
-    marked.setOptions({
-
-    });
-    return marked(content);
+    var content_node = $("<div>" + marked(content) + "</div>");
+    $(content_node).find("code").addClass("hljs");
+    return $(content_node).html();
   }
 
   // 解析时间
   var weekday = {
-    /*"0": "Sunday",
-    "1": "Monday",
-    "2": "Tuesday",
-    "3": "Wednesday",
-    "4": "Thursday",
-    "5": "Friday",
-    "6": "Saturday"*/
     "0": "日",
     "1": "一",
     "2": "二",
@@ -93,9 +92,8 @@ define(function(require, exports, module) {
       article.tagHTML[i] = '<a href="#">' + tag + '</a>';
     });
     article.tagHTML.join(",");
-
     article.contentHTML = "<section class='post-content'>" + article.content + "</section>";
-
+    
     return '<article class="post tag-release featured">' + article.titleHTML + article.contentHTML + '<footer class="post-footer clearfix"><div class="pull-left tag-list"><i class="fa fa-folder-open-o"></i>' + article.tagHTML + '</div></footer>' + '</article>';
   }
   exports.parseInputToHTML = parseInputToHTML;

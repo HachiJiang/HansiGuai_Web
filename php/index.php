@@ -6,12 +6,12 @@ header('Access-Control-Allow-Credentials:true');
 header("Content-Type: application/json;charset=utf-8"); 
 date_default_timezone_set('PRC');
 
-/*function p($var)
+function p($var)
 {
   echo '<pre>';
   print_r($var);
   echo '<pre/>';
-}*/
+}
 
 if(!isset($_REQUEST["event"]) || empty($_REQUEST["event"])) {
  	echo '{"success":false,"msg":"未指定事件"}';
@@ -36,6 +36,10 @@ switch ($_REQUEST["event"]) {
 		break;
 	default:
 		break;
+}
+
+function daddslashes($str) {
+	return (!get_magic_quotes_gpc())?addslashes($str):$str;
 }
 
 //搜索username，验证password
@@ -94,12 +98,13 @@ function saveArticle() {
   $id = trim($_REQUEST['id']);
   if(!$id)
     echo json_encode(error(false, 'id not exist'));
+  $id = daddslashes($id);
 
   $author = trim($_REQUEST['author']);
   if(!$author)
     echo json_encode(error(false, 'author not exist'));
 
-  $title = trim($_REQUEST['title']);
+  $title = daddslashes(trim($_REQUEST['title']));
   if(!$title)
     echo json_encode(error(false, 'title not exist'));
 
@@ -108,6 +113,7 @@ function saveArticle() {
   $content = trim($_REQUEST['content']);
   if(!$content)
     echo json_encode(error(false, 'content not exist'));
+	$content = daddslashes($content);
 
 	//连接数据库
 	$link = new mysqli("121.41.119.102", "root", "123456","hansiguai");
@@ -116,14 +122,15 @@ function saveArticle() {
 	}
 
 	// 如果$id=-1表示为新文章；否则，查询并覆盖旧文章
-	if ($id == "-1") {
+	if ($id == -1) {
 		$date_created = date('Y-m-d H:i:s',time());
-		$sql = 'UPDATE articles SET(author, title, tags, date_created, content) VALUES '.
+		$sql = 'INSERT articles (author, title, tags, date_created, content) VALUES '.
                '("'.$author.'", "'.$title.'", "'.$tags.'" , "'.$date_created.'", "'.$content.'")';
+     $link->query($sql);
 	} else {
 		$sql = 'UPDATE articles SET title="'.$title.'",content="'.$content.'" WHERE id="'.$id.'"';
+		$link->query($sql);
 	}
-	$link->query($sql);
 
 	// 更新相关统计信息，如tag等
 
@@ -142,7 +149,7 @@ function getArticlesByAuthor() {
 	  die('Unable to connect!').mysqli_connect_error();
 	}
 
-	$sql = 'SELECT * FROM articles WHERE author="'.$author.'"';
+	$sql = 'SELECT * FROM articles WHERE author="'.$author.'" order by date_created desc LIMIT 5';
 	$query_info = $link->query($sql);
 	$articles = array();
 	while($article = $query_info->fetch_assoc()) {   

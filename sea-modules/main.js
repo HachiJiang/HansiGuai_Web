@@ -48,7 +48,7 @@ define(function(require, exports, module) {
 
     var XHRs = require('XHRs');
     XHRs.loadAllArticles(username);
-
+    
     // 显示文章编辑窗口区域
     $('#article-create-btn').on('click', function() {
       // 初始化input节点
@@ -92,19 +92,18 @@ define(function(require, exports, module) {
       $('#blog-main').addClass("active");
     });
 
-    // 阅读全文
+    // 请求单篇文章，阅读全文
     $('#blog-main').on('click', '.post-permalink a', function() {
-      var article_node = $(this).parents('article').clone();
-      $(article_node).find('.post-permalink').remove();
-      $(article_node).find('.post-permalink').remove();
-      blog.displaySingleArticle(article_node);
+      var article_id = $(this).parents('article').attr('id');
+      XHRs.requestSingleArticleToDisplay(article_id);
     });
 
     // 点击标题进入编辑模式
     $('.article-single').on('click', '.post-title a', function() {
       // 请求单篇文章数据，并加载到编辑页
       var article_id = $(this).parents('article').attr('id');
-      XHRs.requestSingleArticle(article_id);
+      XHRs.requestSingleArticleToEdit(article_id);
     });
+
   });
 });
