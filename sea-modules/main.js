@@ -48,7 +48,7 @@ define(function(require, exports, module) {
 
     var XHRs = require('XHRs');
     XHRs.loadAllArticles(username);
-    
+
     // 显示文章编辑窗口区域
     $('#article-create-btn').on('click', function() {
       // 初始化input节点
@@ -90,6 +90,19 @@ define(function(require, exports, module) {
       XHRs.loadAllArticles(username);
       $('.article-single').removeClass("active");
       $('#blog-main').addClass("active");
+    });
+
+    // 删除文章
+    $('.article-single').on('click', '#delete-article-btn', function() {
+      var article_id = $(this).parents('article').attr('id');
+      $('#isDeleteMsg').modal();
+      $('#isDeleteMsg .btn-confirm').attr('id', article_id);
+    });
+
+    // 确认删除文章
+    $('#isDeleteMsg').on('click', '.btn-confirm', function() {
+      var article_id = $(this).attr('id');
+      XHRs.deleteSingleArticle(article_id);
     });
 
     // 请求单篇文章，阅读全文

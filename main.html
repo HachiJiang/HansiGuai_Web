@@ -58,8 +58,8 @@
       <div class="container">
         <div class="row">
           <!-- 博客缩略列表 -->
-          <main class="col-md-8 main-content active" id="blog-main">            
-            <nav class="pagination" role="navigation">            
+          <main class="col-md-8 main-content active" id="blog-main">
+            <nav class="pagination" role="navigation">
               <span class="page-number">第 1 页 &frasl; 共 7 页</span>
               <a class="older-posts" href="/page/2/"><i class="fa fa-angle-right"></i></a>
             </nav>
@@ -157,6 +157,23 @@
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="myModalLabel">**Notification**</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 弹出提醒是否删除文章窗口 -->
+  <div class="modal" id="isDeleteMsg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <div class="modal-body">
+            <p>是否确认删除文章？</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+            <button type="button" class="btn btn-primary btn-confirm">Yes</button>
+          </div>
         </div>
       </div>
     </div>

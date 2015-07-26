@@ -101,6 +101,7 @@ define(function(require, exports, module) {
   // 文章转换为单篇显示
   function displaySingleArticle(article_node) {
     article_node.append('<btn class="pull-right" id="back-to-blog-main-btn"><a href="#">→博客主页</a></btn>');
+    article_node.append('<btn class="pull-left" id="delete-article-btn"><a href="#">删除文章</a></btn>');
     $('.article-single').html(article_node);
     $('#article-editor').removeClass("active");
     $('#blog-main').removeClass("active");

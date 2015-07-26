@@ -6,12 +6,12 @@ header('Access-Control-Allow-Credentials:true');
 header("Content-Type: application/json;charset=utf-8"); 
 date_default_timezone_set('PRC');
 
-function p($var)
+/*function p($var)
 {
   echo '<pre>';
   print_r($var);
   echo '<pre/>';
-}
+}*/
 
 if(!isset($_REQUEST["event"]) || empty($_REQUEST["event"])) {
  	echo '{"success":false,"msg":"未指定事件"}';
@@ -33,6 +33,9 @@ switch ($_REQUEST["event"]) {
 		break;
 	case "_0004":
 		getSingleArticleById();
+		break;
+	case "_0005":
+		deleteSingleArticleById();
 		break;
 	default:
 		break;
@@ -149,14 +152,13 @@ function getArticlesByAuthor() {
 	  die('Unable to connect!').mysqli_connect_error();
 	}
 
-	$sql = 'SELECT * FROM articles WHERE author="'.$author.'" order by date_created desc LIMIT 5';
+	$sql = 'SELECT * FROM articles WHERE author="'.$author.'" order by date_created desc';
 	$query_info = $link->query($sql);
 	$articles = array();
 	while($article = $query_info->fetch_assoc()) {   
     array_push($articles, $article);
   }
 
-  //关闭数据库连接
 	$link->close();
 	echo json_encode($articles);
 }
@@ -178,9 +180,26 @@ function getSingleArticleById() {
     array_push($articles, $article);
   }
 
-  //关闭数据库连接
 	$link->close();
 	echo '{"success":true,"msg":'.json_encode($articles[0]).'}';
+}
+
+function deleteSingleArticleById() {
+	$id = trim($_REQUEST['id']);
+  if(!$id)
+    echo json_encode(error(false, 'id not exist'));
+
+  $link = new mysqli("121.41.119.102", "root", "123456","hansiguai");
+	if (mysqli_connect_errno()){
+	  die('Unable to connect!').mysqli_connect_error();
+	}
+
+	$sql = 'DELETE FROM articles WHERE id="'.$id.'"';
+	$link->query($sql);
+
+  //关闭数据库连接
+	$link->close();
+	echo '{"success":true,"msg":"success"}';
 }
 
 ?>

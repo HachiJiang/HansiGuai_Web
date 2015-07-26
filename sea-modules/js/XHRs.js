@@ -37,6 +37,7 @@ define(function(require, exports, module) {
   }
   exports.loadAllArticles = loadAllArticles;
 
+  // 保存单篇文章到数据库
   function saveSingleArticle(article) {
     $.ajax({
       type: "POST",
@@ -68,6 +69,35 @@ define(function(require, exports, module) {
   }
   exports.saveSingleArticle = saveSingleArticle;
 
+  // 保存单篇文章到数据库
+  function deleteSingleArticle(article_id) {
+    $.ajax({
+      type: "POST",
+      url: "./php/index.php",
+      data: {
+        event: "_0005",
+        id: article_id
+      },
+      dataType: "json",
+      success: function(data) {
+        if (data.success) {
+          //文章删除成功，返回主页缩略图列表
+          $('#article-editor').removeClass("active");
+          $('.article-single').removeClass("active");
+          $('#blog-main #' + article_id).remove();
+          $('#isDeleteMsg').modal('hide');
+          $('#blog-main').addClass("active");
+        } else {
+          alert(data.msg);
+        }
+      },
+      error: function(jqXHR) {
+        alert("连接失败");
+      }
+    });
+  }
+  exports.deleteSingleArticle = deleteSingleArticle;
+
   function requestSingleArticleToEdit(article_id) {
     $.ajax({
       type: "POST",
@@ -79,8 +109,6 @@ define(function(require, exports, module) {
       dataType: "json",
       success: function(data) {
         if (data.success) {
-          $('.article-single').removeClass("active");
-          $('#blog-main').removeClass("active");
           //文章请求成功，将单篇文章加载到编辑页
           var article = data.msg;
           $('#article-editor #article-title').val(article.title);
@@ -88,6 +116,8 @@ define(function(require, exports, module) {
           if (article.tags) {
 
           }
+          $('.article-single').removeClass("active");
+          $('#blog-main').removeClass("active");
           $('#article-editor').addClass("active");
           $('#article-editor .form-group').attr("id", article_id);
         } else {
