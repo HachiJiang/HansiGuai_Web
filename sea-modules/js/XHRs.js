@@ -114,7 +114,10 @@ define(function(require, exports, module) {
           $('#article-editor #article-title').val(article.title);
           $('#article-editor textarea').html(article.content);
           if (article.tags) {
-
+            var tags = article.tags.split(',');
+            for (var i = 0; i < tags.length; i++) {
+              $('#article-tags').append('<a class="tag pull-left">' + tags[i] + '</a>');
+            }
           }
           $('.article-single').removeClass("active");
           $('#blog-main').removeClass("active");

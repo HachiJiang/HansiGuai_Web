@@ -49,7 +49,7 @@ define(function(require, exports, module) {
     var XHRs = require('XHRs');
     XHRs.loadAllArticles(username);
 
-    // 显示文章编辑窗口区域
+    // 显示文章编辑窗口区域 - 新文章
     $('#article-create-btn').on('click', function() {
       // 初始化input节点
       $('#article-title').val("");
@@ -62,13 +62,32 @@ define(function(require, exports, module) {
     });
 
     // 退出编辑，重新显示主页文章列表区域
-    $('#exit-editor-btn').on('click', function() {
+    $('#article-editor').on('click', '#exit-editor-btn', function() {
       $('#blog-main').addClass("active");
       $('#article-editor').removeClass("active");
     });
 
+    // 点击 添加标签
+    $('#article-editor').on('click', '#add-tag-btn a', function() {
+      if ($('#article-tags input').length > 0) return;
+      var tag_input = $('<input type="text" class="tag pull-left"></input>');
+      $('#article-tags').prepend(tag_input);
+      $(tag_input).focus();
+    });
+
+    // 输入标签转为a
+    $('#article-editor').on('keydown', '#article-tags input', function(e) {
+      if (e.which === 13) {
+        e.preventDefault();
+        var tag_node = $('<a class="tag pull-left"></a>');
+        $(tag_node).text(this.value);
+        $('#article-editor #article-tags input').remove();
+        $('#article-tags').append(tag_node);
+      }
+    });
+
     // 预览文章，弹出模态框
-    $('#article-preview').on('click', function() {
+    $('#article-editor').on('click', '#article-preview', function() {
       var article = blog.getArticleInfo();
       if (article === "") return;
 
@@ -78,7 +97,7 @@ define(function(require, exports, module) {
     });
 
     // 保存文章，页面跳转显示正文全文
-    $('#save-article-btn').on('click', function() {
+    $('#article-editor').on('click', '#save-article-btn', function() {
       var article = blog.getArticleInfo();
       if (article === "") return;
 
@@ -111,7 +130,7 @@ define(function(require, exports, module) {
       XHRs.requestSingleArticleToDisplay(article_id);
     });
 
-    // 点击标题进入编辑模式
+    // 单篇文章，点击标题进入编辑模式
     $('.article-single').on('click', '.post-title a', function() {
       // 请求单篇文章数据，并加载到编辑页
       var article_id = $(this).parents('article').attr('id');

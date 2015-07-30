@@ -33,7 +33,7 @@ define(function(require, exports, module) {
     var article = {
       author: localStorage.getItem("currentUser"),
       title: $('#article-title').val(),
-      tags: $('#article-tag-list').children('.tag') || "",
+      tags: [],
       date_created: new Date(),
       content: $('#article-content').val()
     };
@@ -42,11 +42,12 @@ define(function(require, exports, module) {
     article.id = (article_id === undefined) ? -1 : article_id;
     if (validateArticleInfo(article) === false) return "";
 
-    var tags = [];
-    $.each(article.tags, function(i, tag) {
-      tags[i] = tag.text;
-    })
-    article.tags = tags;
+    var tag_nodes = $('#article-tags').children();
+    if (tag_nodes.length !== 0) {
+      for (var i = 0; i < tag_nodes.length; i++) {
+        article.tags[i] = $(tag_nodes[i]).text();
+      }
+    }
 
     return article;
   }

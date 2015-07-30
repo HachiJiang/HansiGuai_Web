@@ -131,7 +131,7 @@ function saveArticle() {
                '("'.$author.'", "'.$title.'", "'.$tags.'" , "'.$date_created.'", "'.$content.'")';
      $link->query($sql);
 	} else {
-		$sql = 'UPDATE articles SET title="'.$title.'",content="'.$content.'" WHERE id="'.$id.'"';
+		$sql = 'UPDATE articles SET title="'.$title.'",tags="'.$tags.'",content="'.$content.'" WHERE id="'.$id.'"';
 		$link->query($sql);
 	}
 
