@@ -113,6 +113,7 @@ define(function(require, exports, module) {
           var article = data.msg;
           $('#article-editor #article-title').val(article.title);
           $('#article-editor textarea').html(article.content);
+          $('#article-tags').empty();
           if (article.tags) {
             var tags = article.tags.split(',');
             for (var i = 0; i < tags.length; i++) {

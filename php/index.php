@@ -29,7 +29,7 @@ switch ($_REQUEST["event"]) {
 		saveArticle();
 		break;
 	case "_0003":
-		getArticlesByAuthor();
+		getAllArticles();
 		break;
 	case "_0004":
 		getSingleArticleById();
@@ -142,7 +142,7 @@ function saveArticle() {
 	echo '{"success":true,"msg":"保存成功"}';
 }
 
-function getArticlesByAuthor() {
+function getAllArticles() {
 	$author = trim($_REQUEST['author']);
   if(!$author)
     echo json_encode(error(false, 'author not exist'));
@@ -152,7 +152,7 @@ function getArticlesByAuthor() {
 	  die('Unable to connect!').mysqli_connect_error();
 	}
 
-	$sql = 'SELECT * FROM articles WHERE author="'.$author.'" order by date_created desc';
+	$sql = 'SELECT * FROM articles order by date_created desc';
 	$query_info = $link->query($sql);
 	$articles = array();
 	while($article = $query_info->fetch_assoc()) {   
