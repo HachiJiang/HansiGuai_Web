@@ -46,8 +46,21 @@ define(function(require, exports, module) {
     // 用户存在则展示当前用户内容
     $("#user").html("Welcome, <strong>" + username + "</strong>!");
 
+    var curpageindex = 0;
     var XHRs = require('XHRs');
-    XHRs.loadAllArticles(username);
+    XHRs.loadArticlesByPage(0);
+
+    // 上一页
+    /*$('.article-single').on('click', '.post-title a', function() {
+      
+    });*/
+
+    // 下一页
+    $('#post-pagination').on('click', '#right', function() {
+      curpageindex++;
+      XHRs.loadArticlesByPage(curpageindex);
+    });
+
 
     // 显示文章编辑窗口区域 - 新文章
     $('#article-create-btn').on('click', function() {
@@ -106,7 +119,7 @@ define(function(require, exports, module) {
 
     // 返回博客主页
     $('.article-single').on('click', '#back-to-blog-main-btn', function() {
-      XHRs.loadAllArticles(username);
+      XHRs.loadArticlesByPage(0);
       $('.article-single').removeClass("active");
       $('#blog-main').addClass("active");
     });
@@ -136,6 +149,7 @@ define(function(require, exports, module) {
       var article_id = $(this).parents('article').attr('id');
       XHRs.requestSingleArticleToEdit(article_id);
     });
+
 
   });
 });

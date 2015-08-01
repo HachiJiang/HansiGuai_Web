@@ -6,12 +6,12 @@ header('Access-Control-Allow-Credentials:true');
 header("Content-Type: application/json;charset=utf-8"); 
 date_default_timezone_set('PRC');
 
-/*function p($var)
+function p($var)
 {
   echo '<pre>';
   print_r($var);
   echo '<pre/>';
-}*/
+}
 
 if(!isset($_REQUEST["event"]) || empty($_REQUEST["event"])) {
  	echo '{"success":false,"msg":"未指定事件"}';
@@ -29,7 +29,7 @@ switch ($_REQUEST["event"]) {
 		saveArticle();
 		break;
 	case "_0003":
-		getAllArticles();
+		getArticlesByPage();
 		break;
 	case "_0004":
 		getSingleArticleById();
@@ -45,15 +45,22 @@ function daddslashes($str) {
 	return (!get_magic_quotes_gpc())?addslashes($str):$str;
 }
 
+function error($flag, $log) {
+	$error = json_decode('{}');
+	$error->success = $flag;
+	$error->msg = $log;
+	return $error;
+}
+
 //搜索username，验证password
 function login(){
-	if(!isset($_REQUEST["username"]) || empty($_REQUEST["username"]) 
-	 	|| !isset($_REQUEST["password"]) || empty($_REQUEST["password"])) {
+	$username = $_REQUEST["username"];
+	$password = $_REQUEST["password"];
+	if(!isset($username) || empty($username) 
+	 	|| !isset($password) || empty($password)) {
 	 	echo '{"success":false,"msg":"输入无效"}';
 	 	return;
 	}
-	$username = $_REQUEST["username"];
-	$password = $_REQUEST["password"];
 	$result = '{"success":false,"msg":"用户名或密码不存在"}';
 	//连接数据库
 	$link = new mysqli("121.41.119.102", "root", "123456","hansiguai");
@@ -142,17 +149,21 @@ function saveArticle() {
 	echo '{"success":true,"msg":"保存成功"}';
 }
 
-function getAllArticles() {
-	$author = trim($_REQUEST['author']);
-  if(!$author)
-    echo json_encode(error(false, 'author not exist'));
+function getArticlesByPage() {
+  $pageindex = trim($_REQUEST['pageindex']);
+  if(!isset($pageindex))
+    echo json_encode(error(false, 'pageindex not exist'));
 
   $link = new mysqli("121.41.119.102", "root", "123456","hansiguai");
 	if (mysqli_connect_errno()){
 	  die('Unable to connect!').mysqli_connect_error();
 	}
 
-	$sql = 'SELECT * FROM articles order by date_created desc';
+	$unit = 2;
+	$sql = 'SELECT count(id) FROM articles';
+	$pagecount = ceil($link->query($sql)->fetch_array()[0] / $unit);
+
+	$sql = 'SELECT * FROM articles order by date_created desc LIMIT '.$pageindex.','.$unit;
 	$query_info = $link->query($sql);
 	$articles = array();
 	while($article = $query_info->fetch_assoc()) {   
@@ -160,12 +171,15 @@ function getAllArticles() {
   }
 
 	$link->close();
-	echo json_encode($articles);
+	$result = json_decode('{}');
+	$result->pagecount = $pagecount;
+	$result->articles = $articles;
+	echo json_encode($result);
 }
 
 function getSingleArticleById() {
 	$id = trim($_REQUEST['id']);
-  if(!$id)
+  if(!isset($id))
     echo json_encode(error(false, 'id not exist'));
 
   $link = new mysqli("121.41.119.102", "root", "123456","hansiguai");

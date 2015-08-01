@@ -94,13 +94,15 @@ define(function(require, exports, module) {
     });
     article.tagHTML.join(",");
     article.contentHTML = "<section class='post-content'>" + article.content + "</section>";
-    
+
     return '<article class="post tag-release featured">' + article.titleHTML + article.contentHTML + '<footer class="post-footer clearfix"><div class="pull-left tag-list"><i class="fa fa-folder-open-o"></i>' + article.tagHTML + '</div></footer>' + '</article>';
   }
   exports.parseInputToHTML = parseInputToHTML;
 
   // 文章转换为单篇显示
-  function displaySingleArticle(article_node) {
+  function displaySingleArticle(article) {
+    var article_node = $(parseInputToHTML(article));
+    $(article_node).attr("id", article.id);
     article_node.append('<btn class="pull-right" id="back-to-blog-main-btn"><a href="#">→博客主页</a></btn>');
     article_node.append('<btn class="pull-left" id="delete-article-btn"><a href="#">删除文章</a></btn>');
     $('.article-single').html(article_node);

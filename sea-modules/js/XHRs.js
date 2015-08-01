@@ -5,20 +5,22 @@ define(function(require, exports, module) {
   var blog = require("blog");
 
   // 请求加载数据库里的文章
-  function loadAllArticles(username) {
+  function loadArticlesByPage(pageindex) {
     $.ajax({
       type: "GET",
       url: "./php/index.php",
       data: {
         event: "_0003",
-        author: username
+        pageindex: pageindex
       },
       dataType: "json",
       success: function(data) {
         var permalink_btn = '<div class="post-permalink"><a href="#" class="btn btn-default">阅读全文</a></div>';
         var tmp = $('<div></div>');
         //数据请求成功，获取当前用户所有文章
-        data.forEach(function(article) {
+        var pagecount = data.pagecount;
+        var articles = data.articles;
+        articles.forEach(function(article) {
           article.date_created = new Date(article.date_created);
           article.tags = article.tags.split(",");
           var article_node = $(blog.parseInputToHTML(article));
@@ -26,8 +28,10 @@ define(function(require, exports, module) {
           $(article_node).find('.post-footer').before(permalink_btn);
           tmp.append(article_node);
         })
-        tmp.append('<nav class="pagination" role="navigation"><span class="page-number">第 1 页 ⁄ 共 7 页</span><a class="older-posts" href="/page/2/"><i class="fa fa-angle-right"></i></a></nav>');
+        pageindex++;
+        tmp.append('<nav id="post-pagination" class="pagination" role="navigation"><a id="left" class="newer-posts" href="#"><i class="fa fa-angle-left"></i></a><span class="page-number">第 ' + pageindex + ' 页 ⁄ 共 ' + pagecount + ' 页</span><a id="right" class="older-posts" href="#"><i class="fa fa-angle-right"></i></a></nav>');
         $('#blog-main').html(tmp.html());
+        $('#post-pagination #left').hide();
       },
       error: function(jqXHR) {
         //数据请求失败，弹出报错
@@ -35,7 +39,7 @@ define(function(require, exports, module) {
       }
     });
   }
-  exports.loadAllArticles = loadAllArticles;
+  exports.loadArticlesByPage = loadArticlesByPage;
 
   // 保存单篇文章到数据库
   function saveSingleArticle(article) {
@@ -54,8 +58,7 @@ define(function(require, exports, module) {
       success: function(data) {
         if (data.success) {
           //文章保存成功，显示整篇文章
-          var article_node = $(blog.parseInputToHTML(article));
-          blog.displaySingleArticle(article_node);
+          blog.displaySingleArticle(article);
         } else {
           //数据请求成功，但验证失败
           alert(data.msg);
@@ -82,6 +85,7 @@ define(function(require, exports, module) {
       success: function(data) {
         if (data.success) {
           //文章删除成功，返回主页缩略图列表
+          loadArticlesByPage(0);
           $('#article-editor').removeClass("active");
           $('.article-single').removeClass("active");
           $('#blog-main #' + article_id).remove();
@@ -152,9 +156,7 @@ define(function(require, exports, module) {
           var article = data.msg;
           article.date_created = new Date(article.date_created);
           article.tags = article.tags.split(",");
-          var article_node = $(blog.parseInputToHTML(article));
-          $(article_node).attr("id", article.id);
-          blog.displaySingleArticle(article_node);
+          blog.displaySingleArticle(article);
         } else {
           //数据请求成功，但验证失败
           alert(data.msg);
