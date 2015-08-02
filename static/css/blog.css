@@ -1130,8 +1130,3 @@ input.tag {
   height: 30px;
   line-height: 30px;
 }
-
-#blog-main article .post-content {
-  height: 200px;
-  overflow: hidden;
-}

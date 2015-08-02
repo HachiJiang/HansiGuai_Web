@@ -51,19 +51,22 @@ define(function(require, exports, module) {
     XHRs.loadArticlesByPage(0);
 
     // 上一页
-    /*$('.article-single').on('click', '.post-title a', function() {
-      
-    });*/
+    $('#blog-main').on('click', '.newer-posts', function() {
+      $('#blog-main').empty();
+      curpageindex--;
+      XHRs.loadArticlesByPage(curpageindex);
+    });
 
     // 下一页
-    $('#post-pagination').on('click', '#right', function() {
+    $('#blog-main').on('click', '.older-posts', function() {
+      $('#blog-main').empty();
       curpageindex++;
       XHRs.loadArticlesByPage(curpageindex);
     });
 
 
     // 显示文章编辑窗口区域 - 新文章
-    $('#article-create-btn').on('click', function() {
+    $('.widget').on('click', '#article-create-btn', function() {
       // 初始化input节点
       $('#article-title').val("");
       $('#article-content').val("");

@@ -23,15 +23,22 @@ define(function(require, exports, module) {
         articles.forEach(function(article) {
           article.date_created = new Date(article.date_created);
           article.tags = article.tags.split(",");
+          if (article.content.length > 200) {
+            article.content = article.content.substr(0, 200) + " <br>......";
+          }
           var article_node = $(blog.parseInputToHTML(article));
           $(article_node).attr("id", article.id);
           $(article_node).find('.post-footer').before(permalink_btn);
           tmp.append(article_node);
         })
-        pageindex++;
-        tmp.append('<nav id="post-pagination" class="pagination" role="navigation"><a id="left" class="newer-posts" href="#"><i class="fa fa-angle-left"></i></a><span class="page-number">第 ' + pageindex + ' 页 ⁄ 共 ' + pagecount + ' 页</span><a id="right" class="older-posts" href="#"><i class="fa fa-angle-right"></i></a></nav>');
+        tmp.append('<nav id="post-pagination" class="pagination" role="navigation"><a id="' + (pageindex - 1) + '" class="newer-posts" href="#"><i class="fa fa-angle-left"></i></a><span class="page-number">第 ' + (pageindex+1) + ' 页 ⁄ 共 ' + pagecount + ' 页</span><a id="' + (pageindex + 1) + '" class="older-posts" href="#"><i class="fa fa-angle-right"></i></a></nav>');
         $('#blog-main').html(tmp.html());
-        $('#post-pagination #left').hide();
+        if (pageindex === 0) {
+          $('#post-pagination .newer-posts').hide();
+        } 
+        if (pageindex === (pagecount - 1)) {
+          $('#post-pagination .older-posts').hide();
+        }
       },
       error: function(jqXHR) {
         //数据请求失败，弹出报错

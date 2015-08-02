@@ -159,11 +159,13 @@ function getArticlesByPage() {
 	  die('Unable to connect!').mysqli_connect_error();
 	}
 
-	$unit = 2;
+	$unit = 5;
 	$sql = 'SELECT count(id) FROM articles';
-	$pagecount = ceil($link->query($sql)->fetch_array()[0] / $unit);
+	$articlecount = $link->query($sql)->fetch_array()[0];
+	$pagecount = ceil($articlecount / $unit);
+	$offset = $pageindex * $unit;
 
-	$sql = 'SELECT * FROM articles order by date_created desc LIMIT '.$pageindex.','.$unit;
+	$sql = 'SELECT * FROM articles ORDER BY date_created DESC LIMIT '.$offset.','.$unit;
 	$query_info = $link->query($sql);
 	$articles = array();
 	while($article = $query_info->fetch_assoc()) {   
