@@ -912,25 +912,22 @@ pre {
   text-decoration: none;
 }
 
+.tag, #add-tag-btn, input.tag {
+  padding: 2px 4px;
+  margin: 2px 5px 2px 0px;
+}
+#article-tags .fa-times {
+  margin-left: 5px;  
+}
+#add-tag-btn {
+  margin-top: 4px;
+}
 input.tag {
   width: 50px;
-  border: 1px solid #ebebeb;
-  padding: 2px 7px;
-  color: #959595;
-  line-height: 1em;
-  display: inline-block;
-  margin: 0 7px 7px 0;
-  -webkit-transition: all 0.2s ease;
-  -o-transition: all 0.2s ease;
-  transition: all 0.2s ease;
 }
 .tag {
   border: 1px solid #ebebeb;
-  padding: 2px 7px;
   color: #959595;
-  line-height: 1.5em;
-  display: inline-block;
-  margin: 0 7px 7px 0;
   -webkit-transition: all 0.2s ease;
   -o-transition: all 0.2s ease;
   transition: all 0.2s ease;
@@ -1129,4 +1126,13 @@ input.tag {
   width: 30px;
   height: 30px;
   line-height: 30px;
+}
+
+#article-tag-list, #article-tags {
+  margin-left: 5px;
+}
+
+#editor-toolbar {
+  clear: both;
+  margin: 2px 5px;
 }

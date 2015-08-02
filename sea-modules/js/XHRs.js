@@ -31,13 +31,13 @@ define(function(require, exports, module) {
           $(article_node).find('.post-footer').before(permalink_btn);
           tmp.append(article_node);
         })
-        tmp.append('<nav id="post-pagination" class="pagination" role="navigation"><a id="' + (pageindex - 1) + '" class="newer-posts" href="#"><i class="fa fa-angle-left"></i></a><span class="page-number">第 ' + (pageindex+1) + ' 页 ⁄ 共 ' + pagecount + ' 页</span><a id="' + (pageindex + 1) + '" class="older-posts" href="#"><i class="fa fa-angle-right"></i></a></nav>');
+        tmp.append('<nav id="post-pagination" class="pagination" role="navigation"><span class="page-number">第 ' + (pageindex+1) + ' 页 ⁄ 共 ' + pagecount + ' 页</span></nav>');
         $('#blog-main').html(tmp.html());
-        if (pageindex === 0) {
-          $('#post-pagination .newer-posts').hide();
+        if (pageindex > 0) {
+          $('#post-pagination').prepend('<a id="' + (pageindex - 1) + '" class="newer-posts" href="#"><i class="fa fa-angle-left"></i></a>');
         } 
-        if (pageindex === (pagecount - 1)) {
-          $('#post-pagination .older-posts').hide();
+        if (pageindex < pagecount - 1) {
+          $('#post-pagination').append('<a id="' + (pageindex + 1) + '" class="older-posts" href="#"><i class="fa fa-angle-right"></i></a>');
         }
       },
       error: function(jqXHR) {
@@ -94,7 +94,7 @@ define(function(require, exports, module) {
           //文章删除成功，返回主页缩略图列表
           loadArticlesByPage(0);
           $('#article-editor').removeClass("active");
-          $('.article-single').removeClass("active");
+          $('#article-single').removeClass("active");
           $('#blog-main #' + article_id).remove();
           $('#isDeleteMsg').modal('hide');
           $('#blog-main').addClass("active");
@@ -131,10 +131,11 @@ define(function(require, exports, module) {
               $('#article-tags').append('<a class="tag pull-left">' + tags[i] + '</a>');
             }
           }
-          $('.article-single').removeClass("active");
+          $('#article-single').removeClass("active");
           $('#blog-main').removeClass("active");
-          $('#article-editor').addClass("active");
           $('#article-editor .form-group').attr("id", article_id);
+          $('#article-editor').addClass("active");
+          $('#article-editor #article-title').focus();
         } else {
           //数据请求成功，但验证失败
           alert(data.msg);

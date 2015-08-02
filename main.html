@@ -62,7 +62,7 @@
           <main class="col-md-8 main-content active" id="blog-main">
           </main>
           <!-- 博客单篇文章全文 -->
-          <section class="col-md-8 main-content article-single">
+          <section class="col-md-8 main-content" id="article-single">
           </section>
           <!-- 博客文章编辑 -->
           <section class="col-md-8 main-content" id="article-editor">
@@ -70,15 +70,16 @@
             <div>
               <form class="form-group">
                 <input class="form-control" placeholder="标题" id="article-title" value="">
-                <div>
-                  <div class="pull-left" id="article-tag-list">
-                    <btn id="add-tag-btn"><a href="#">添加标签</a></btn>
-                    <div id="article-tags">
-                    </div>
+                <div id="article-tag-list">
+                  <btn class="pull-left" id="add-tag-btn"><a href="#">添加标签</a></btn>
+                  <div class="pull-left" id="article-tags">
                   </div>
-                  <div class="pull-right" id="article-preview">
-                    <btn data-toggle="modal"><a href="#">预览</a></btn>
-                  </div>
+                </div>
+                <div class="pull-right" id="article-preview">
+                  <btn data-toggle="modal"><a href="#">预览</a></btn>
+                </div>
+                <div id="editor-toolbar">
+                  <btn><i class="fa fa-picture-o"></i></btn>
                 </div>
                 <textarea rows="18" class="form-control" placeholder="正文, 请使用markdown语法编辑" id="article-content"></textarea>
               </form>

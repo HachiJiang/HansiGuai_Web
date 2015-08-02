@@ -105,10 +105,10 @@ define(function(require, exports, module) {
     $(article_node).attr("id", article.id);
     article_node.append('<btn class="pull-right" id="back-to-blog-main-btn"><a href="#">→博客主页</a></btn>');
     article_node.append('<btn class="pull-left" id="delete-article-btn"><a href="#">删除文章</a></btn>');
-    $('.article-single').html(article_node);
+    $('#article-single').html(article_node);
     $('#article-editor').removeClass("active");
     $('#blog-main').removeClass("active");
-    $('.article-single').addClass("active");
+    $('#article-single').addClass("active");
   }
   exports.displaySingleArticle = displaySingleArticle;
 })

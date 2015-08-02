@@ -72,15 +72,20 @@ define(function(require, exports, module) {
       $('#article-content').val("");
       $('#article-tags').empty();
 
-      $('.article-single').removeClass("active");
+      $('#article-single').removeClass("active");
       $('#blog-main').removeClass("active");
       $('#article-editor').addClass("active");
+      $('#article-editor #article-title').focus();
     });
 
     // 退出编辑，重新显示主页文章列表区域
     $('#article-editor').on('click', '#exit-editor-btn', function() {
-      $('#blog-main').addClass("active");
       $('#article-editor').removeClass("active");
+      if (!$('#article-editor form').attr('id')) {
+        $('#article-single').addClass("active");
+      } else {
+        $('#blog-main').addClass("active");
+      }
     });
 
     // 点击 添加标签
@@ -98,7 +103,7 @@ define(function(require, exports, module) {
         var tag_node = $('<a class="tag pull-left"></a>');
         $(tag_node).text(this.value);
         $('#article-editor #article-tags input').remove();
-        $('#article-tags').append(tag_node);
+        $('#article-tags').prepend(tag_node);
       }
     });
 
@@ -121,14 +126,14 @@ define(function(require, exports, module) {
     });
 
     // 返回博客主页
-    $('.article-single').on('click', '#back-to-blog-main-btn', function() {
+    $('#article-single').on('click', '#back-to-blog-main-btn', function() {
+      $('#article-single').removeClass("active");
       XHRs.loadArticlesByPage(0);
-      $('.article-single').removeClass("active");
       $('#blog-main').addClass("active");
     });
 
     // 删除文章
-    $('.article-single').on('click', '#delete-article-btn', function() {
+    $('#article-single').on('click', '#delete-article-btn', function() {
       var article_id = $(this).parents('article').attr('id');
       $('#isDeleteMsg').modal();
       $('#isDeleteMsg .btn-confirm').attr('id', article_id);
@@ -147,12 +152,24 @@ define(function(require, exports, module) {
     });
 
     // 单篇文章，点击标题进入编辑模式
-    $('.article-single').on('click', '.post-title a', function() {
+    $('#article-single').on('click', '.post-title a', function() {
       // 请求单篇文章数据，并加载到编辑页
       var article_id = $(this).parents('article').attr('id');
       XHRs.requestSingleArticleToEdit(article_id);
     });
 
+    // 编辑模式下，标签mouse over时浮动删除icon
+    $('#article-editor').on('mouseenter', '.tag', function() {
+      $(this).append('<i class="fa fa-times"></i>');
+    });
+    $('#article-editor').on('mouseleave', '.tag', function() {
+      $(this).find('.fa-times').remove();
+    });
+
+    // 编辑模式下，点击标签的删除icon
+    $('#article-editor').on('click', '.fa-times', function() {
+      $(this).parents('.tag').remove();
+    });
 
   });
 });
