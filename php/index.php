@@ -161,7 +161,8 @@ function getArticlesByPage() {
 
 	$unit = 5;
 	$sql = 'SELECT count(id) FROM articles';
-	$articlecount = $link->query($sql)->fetch_array()[0];
+	$articlecount = $link->query($sql)->fetch_array();
+	$articlecount = $articlecount[0];
 	$pagecount = ceil($articlecount / $unit);
 	$offset = $pageindex * $unit;
 
