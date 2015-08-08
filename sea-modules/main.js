@@ -71,6 +71,7 @@ define(function(require, exports, module) {
       $('#article-title').val("");
       $('#article-content').val("");
       $('#article-tags').empty();
+      $('#article-editor form').removeAttr('id');
 
       $('#article-single').removeClass("active");
       $('#blog-main').removeClass("active");
@@ -81,7 +82,7 @@ define(function(require, exports, module) {
     // 退出编辑，重新显示主页文章列表区域
     $('#article-editor').on('click', '#exit-editor-btn', function() {
       $('#article-editor').removeClass("active");
-      if (!$('#article-editor form').attr('id')) {
+      if ($('#article-editor form').attr('id')) {
         $('#article-single').addClass("active");
       } else {
         $('#blog-main').addClass("active");

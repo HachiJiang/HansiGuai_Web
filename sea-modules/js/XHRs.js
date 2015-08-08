@@ -123,7 +123,7 @@ define(function(require, exports, module) {
           //文章请求成功，将单篇文章加载到编辑页
           var article = data.msg;
           $('#article-editor #article-title').val(article.title);
-          $('#article-editor textarea').html(article.content);
+          $('#article-editor textarea').val(article.content);
           $('#article-tags').empty();
           if (article.tags) {
             var tags = article.tags.split(',');
