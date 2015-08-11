@@ -172,5 +172,13 @@ define(function(require, exports, module) {
       $(this).parents('.tag').remove();
     });
 
+    // 编辑模式下，点击图片icon 插入图片
+    $('#article-editor').on('click', '#btn-article-pic', function() {
+      $('#upload-file-dialog').modal({
+        keyboard: false
+      });
+    });
+    
+
   });
 });

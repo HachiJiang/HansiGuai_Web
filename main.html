@@ -79,7 +79,9 @@
                   <btn data-toggle="modal"><a href="#">预览</a></btn>
                 </div>
                 <div id="editor-toolbar">
-                  <btn><i class="fa fa-picture-o"></i></btn>
+                  <button id="btn-article-pic" type="button" class="btn btn-default btn-xs">
+                    <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                  </button>
                 </div>
                 <textarea rows="18" class="form-control" placeholder="正文, 请使用markdown语法编辑" id="article-content"></textarea>
               </form>
@@ -154,13 +156,13 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <div class="modal-body">
-            <p>是否确认删除文章？</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-            <button type="button" class="btn btn-primary btn-confirm">Yes</button>
-          </div>
+        </div>
+        <div class="modal-body">
+          <p>是否确认删除文章？</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+          <button type="button" class="btn btn-primary btn-confirm">Yes</button>
         </div>
       </div>
     </div>
@@ -171,6 +173,34 @@
       <div class="modal-content">
         <div class="modal-body">
           <p>模态弹出窗主体内容</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 上传文件窗口 -->
+  <div class="modal" id="upload-file-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">插入图片</h4>
+        </div>
+        <div class="modal-body">
+          <input id="lefile" type="file" style="display:none">
+          <div class="input-group">
+            <span class="input-group-addon" id="sizing-addon1">
+              <span class="glyphicon glyphicon-picture btn-xs"></span>
+            </span>
+            <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button" onclick="$('input[id=lefile]').click();">...</button>
+            </span>
+          </div>
+          <p>注意：*仅支持本地图片*</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary btn-confirm">确定</button>
         </div>
       </div>
     </div>
