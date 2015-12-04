@@ -59,13 +59,13 @@
       <div class="container">
         <div class="row">
           <!-- 博客缩略列表 -->
-          <main class="col-md-8 main-content active" id="blog-main">
+          <main class="col-md-9 main-content active" id="blog-main">
           </main>
           <!-- 博客单篇文章全文 -->
-          <section class="col-md-8 main-content" id="article-single">
+          <section class="col-md-9 main-content" id="article-single">
           </section>
           <!-- 博客文章编辑 -->
-          <section class="col-md-8 main-content" id="article-editor">
+          <section class="col-md-9 main-content" id="article-editor">
             <h4>文章编辑</h4>
             <div>
               <form class="form-group">
@@ -91,7 +91,7 @@
               <button type="button" class="btn btn-primary" id="save-article-btn">保存文章</button>
             </div>
           </section>
-          <aside class="col-md-4 sidebar">
+          <aside class="col-md-3 sidebar">
             <!-- start widget -->
             <div class="widget">
               <a href="" class="btn btn-default btn-block" data-toggle="modal" data-target="#article-create-dialog" id="article-create-btn">写文章</a>
@@ -186,21 +186,20 @@
           <h4 class="modal-title" id="myModalLabel">插入图片</h4>
         </div>
         <div class="modal-body">
-          <input id="lefile" type="file" style="display:none">
+          <input id="upload-img" type="file" accept="image/png,image/gif,image/jpg,image/jpeg" multiple="multiple" style="display:none">
           <div class="input-group">
             <span class="input-group-addon" id="sizing-addon1">
               <span class="glyphicon glyphicon-picture btn-xs"></span>
             </span>
-            <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+            <input type="text" class="form-control" id="input-img-links">
             <span class="input-group-btn">
-              <button class="btn btn-default" type="button" onclick="$('input[id=lefile]').click();">...</button>
+              <button class="btn" type="button" onclick="$('input[id=upload-img]').click();">...</button>
             </span>
           </div>
-          <p>注意：*仅支持本地图片*</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-          <button type="button" class="btn btn-primary btn-confirm">确定</button>
+          <button type="button" class="btn btn-primary btn-confirm" id="btn-upload-img">确定</button>
         </div>
       </div>
     </div>
@@ -215,7 +214,8 @@
       "bootstrap": "js/bootstrap.min",
       "marked": "js/marked.min",
       "blog": "js/blog",
-      "XHRs": "js/XHRs"
+      "XHRs": "js/XHRs",
+      "jquery-extend": "js/jquery-extend"
     }
   });
 

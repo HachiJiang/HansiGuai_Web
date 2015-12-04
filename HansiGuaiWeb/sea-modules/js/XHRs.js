@@ -91,7 +91,7 @@ define(function(require, exports, module) {
       dataType: "json",
       success: function(data) {
         if (data.success) {
-          //文章删除成功，返回主页缩略图列表
+          //文章保存成功，返回主页缩略图列表
           loadArticlesByPage(0);
           $('#article-editor').removeClass("active");
           $('#article-single').removeClass("active");

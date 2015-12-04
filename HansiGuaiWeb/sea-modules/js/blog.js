@@ -13,15 +13,17 @@ define(function(require, exports, module) {
 
   // 验证用户输入是否有效
   function validateArticleInfo(article) {
+    var preview_dialog = $('#article-preview-dialog');
+    var msg_div = preview_dialog.find('.modal-body');
     if (!article.title) {
-      $("#myModalLabel").html("请输入标题");
-      $("#notifyMsg").modal();
+      msg_div.html("请输入标题");
+      preview_dialog.modal();
       return false;
     }
 
     if (!article.content) {
-      $("#myModalLabel").html("请输入文章内容");
-      $("#notifyMsg").modal();
+      msg_div.html("请输入文章内容");
+      review_dialog.modal();
       return false;
     }
 
@@ -111,4 +113,11 @@ define(function(require, exports, module) {
     $('#article-single').addClass("active");
   }
   exports.displaySingleArticle = displaySingleArticle;
-})
+
+  // 在光标处插入字符串
+  function insertAtPos(str, extrastr, pos) {
+    return str.substr(0, pos) + extrastr + str.substr(pos, str.length - pos);
+  }
+  exports.insertAtPos = insertAtPos;
+
+});

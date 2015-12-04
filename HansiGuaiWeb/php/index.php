@@ -159,7 +159,7 @@ function getArticlesByPage() {
 	  die('Unable to connect!').mysqli_connect_error();
 	}
 
-	$unit = 5;
+	$unit = 10;
 	$sql = 'SELECT count(id) FROM articles';
 	$articlecount = $link->query($sql)->fetch_array();
 	$articlecount = $articlecount[0];

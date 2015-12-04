@@ -8,7 +8,7 @@ define(function(require, exports, module) {
     var active_href = $("#menu-nav li.active a").attr("href");
 
     // 为关闭warning窗口绑定事件：转向登陆页
-    $('#warningMsg').on('hide.bs.modal', function() {
+    $('#notifyMsg').on('hide.bs.modal', function() {
       location.href = "index.html";
     });
     // 读取session中用户信息，session验证失败则转至登陆页
@@ -114,8 +114,9 @@ define(function(require, exports, module) {
       if (article === "") return;
 
       var articleHTML = blog.parseInputToHTML(article);
-      $('#article-preview-dialog').find('.modal-body').html(articleHTML);
-      $('#article-preview-dialog').modal();
+      var preview_dialog = $('#article-preview-dialog');
+      preview_dialog.find('.modal-body').html(articleHTML);
+      preview_dialog.modal();
     });
 
     // 保存文章，页面跳转显示正文全文
@@ -178,7 +179,45 @@ define(function(require, exports, module) {
         keyboard: false
       });
     });
+
+    // 显示前重置上传表单
+    $('#upload-file-dialog').on('hidden.bs.modal', function() {
+      $(this).find('#upload-img').val("");
+      $(this).find('#input-img-links').val("");
+    });
+
+    // 上传文件时，显示文件列表
+    $('#upload-file-dialog').on('change', '#upload-img', function() {
+      var files = $(this).prop('files');
+      var len = files.length;
+      var filenames = files[0].name;
+      for (var i = 1; i < len; i++) {
+        filenames += ";" + files[i].name;
+      }
+      $('#input-img-links').val(filenames);
+    });
+
+    require("jquery-extend");
     
+    // 生成文件链接内容
+    $('#upload-file-dialog').on('click', '#btn-upload-img', function() {
+      var files = $('#upload-img').prop('files');
+      var len = files.length;
+      if (len === 0) {
+        $('#upload-file-dialog .modal-body').append('<p>未上传任何文件</p>');
+        return;
+      }
+
+      var imgHTML = "";
+      for (var i = 0; i < len; i++) {
+        imgHTML += '![Alt text](./static/images/' + username + '/' + new Date().getTime() + '_' + files[i].name + ')\n';
+      }
+
+      var contentnode = $('#article-content');
+      var content = blog.insertAtPos(contentnode.val(), imgHTML, contentnode.getCurPos());
+      contentnode.val(content);
+      $('#upload-file-dialog').modal('hide');
+    });
 
   });
 });
